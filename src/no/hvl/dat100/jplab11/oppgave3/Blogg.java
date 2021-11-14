@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TooManyListenersException;
 
+import javax.management.loading.PrivateClassLoader;
+
 import no.hvl.dat100.jplab11.common.TODO;
 import no.hvl.dat100.jplab11.oppgave1.*;
 import no.hvl.dat100.jplab11.oppgave2.Bilde;
@@ -12,20 +14,20 @@ public class Blogg {
 
 	private Innlegg[] samling;
 	private int nesteLedige;
-	private int antall;
 
 	public Blogg() {
-
-		this(20);
-
+		samling=new Innlegg [20];
+		nesteLedige= 0;
 	}
 
 	public Blogg(int lengde) {
 		samling = new Innlegg[lengde];
+		nesteLedige= 0;
+
 	}
 
 	public int getAntall() {
-		return antall;
+		return nesteLedige;
 	}
 
 	public Innlegg[] getSamling() {
@@ -33,23 +35,19 @@ public class Blogg {
 	}
 
 	public int finnInnlegg(Innlegg innlegg) {
-
-		for (int i = 0; i > nesteLedige; i++)
-			if (innlegg.erLik(samling[i])) {
-				return i;
+		
+		int funnet =-1;
+		for (int i = 0; i < nesteLedige; i++)
+			if (samling[i].erLik(innlegg)) {
+				funnet= i;
 			}
-		return -1;
+		return funnet;
 
 	}
 
 	public boolean finnes(Innlegg innlegg) {
 
-		boolean finnest = false;
-
-		if (finnInnlegg(innlegg) == -1) {
-			finnest = true;
-		}
-		return finnest;
+		return finnInnlegg(innlegg)>=0;
 
 	}
 
@@ -69,22 +67,17 @@ public class Blogg {
 
 	}
 
-	
 	@Override
+
 	public String toString() {
-		
-			String str = "";
-		for (int i = 0; i < samling.length; i++) { 
-			Innlegg nyInnlegg = samling[i];
-			return nyInnlegg.toString();
+		String str = "" + (nesteLedige) + "\n";
+		for (int i = 0; i < nesteLedige; i++) {
+			str += samling[i].toString();
 		}
-
 		return str;
-
 	}
 
 	// valgfrie oppgaver nedenfor
-
 	public void utvid() {
 		throw new UnsupportedOperationException(TODO.method());
 	}
@@ -100,4 +93,7 @@ public class Blogg {
 	public int[] search(String keyword) {
 
 	}
+	
+
+	
 }
